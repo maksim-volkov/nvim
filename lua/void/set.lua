@@ -75,3 +75,6 @@ vim.opt.colorcolumn = "80"
 
 -- Spell checking
 vim.opt.spell = false
+
+-- <Tab> is ascii 9.
+vim.opt.wildcharm = 9

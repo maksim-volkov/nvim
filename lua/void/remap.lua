@@ -36,17 +36,15 @@ vim.keymap.set('n', '<F6>', '<cmd>DapStepInto <CR>', { desc = 'Debug step into' 
 vim.keymap.set('n', '<F9>', '<cmd>DapContinue <CR>', { desc = 'Debug continue' })
 vim.keymap.set('n', '<leader>d', '<cmd>DapNew <CR>', { desc = 'New debug session' })
 
-function OPEN_DEBUG()
+vim.keymap.set('n', '<leader>db', function()
     local widgets = require('dap.ui.widgets');
     local sidebar = widgets.sidebar(widgets.scopes);
     sidebar.open();
-end
-vim.keymap.set('n', '<leader>db', '<cmd>lua OPEN_DEBUG() <CR>', { desc = 'Open debugging sidebar' })
+end, { desc = 'Open debugging sidebar' })
 
-function DEBUG_GO_TEST()
+vim.keymap.set('n', '<leader>dbt', function()
     require('dap-go').debug_test()
-end
-vim.keymap.set('n', '<leader>dbt', '<cmd>lua DEBUG_GO_TEST() <CR>', { desc = 'Debug Go test' })
+end, { desc = 'Debug Go test' })
 
 -- Copy to clipboard.
 vim.keymap.set('v', '<C-c>', '"*y', { desc = 'Copy to system clipboard' })
@@ -54,5 +52,49 @@ vim.keymap.set('v', '<C-c>', '"*y', { desc = 'Copy to system clipboard' })
 -- File explorer.
 vim.keymap.set('n', '<F2>', '<cmd>NvimTreeToggle <CR>', { desc = 'Toggle file expolorer' })
 
--- Symbols
+-- Symbols.
 vim.keymap.set('n', '<leader>t', '<cmd>Outline <CR>', { desc = 'Toggle symbols expolorer' })
+
+-- Spell checking.
+---@param lang string
+local function SetSpell(lang)
+    if lang == "off" or lang == "" then
+        vim.opt.spell = false
+        return
+    end
+    vim.opt.spell = true
+    vim.opt.spelllang = lang
+end
+
+vim.api.nvim_create_user_command("SetSpell", function(opts)
+    SetSpell(opts.args)
+end, {
+    desc = "Set spell checking languages.",
+    nargs = "*",
+    ---@param arg string
+    complete = function(arg)
+        local langs = {"en", "ru", "en,ru", "off"}
+
+        local function startswith(str, prefix)
+            return str:sub(1, #prefix) == prefix
+        end
+
+        local filtered = {}
+
+        if arg == "" then
+            filtered = langs
+        else
+            for _, str in ipairs(langs) do
+                if startswith(str, arg) then
+                    table.insert(filtered, str)
+                  end
+            end
+        end
+
+        table.sort(filtered)
+
+        return filtered
+    end,
+})
+
+vim.keymap.set('n', '<F3>', ':SetSpell <Tab>', { desc = 'Set language spell cheking' })
