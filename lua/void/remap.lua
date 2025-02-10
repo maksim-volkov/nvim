@@ -52,8 +52,15 @@ vim.keymap.set('v', '<C-c>', '"*y', { desc = 'Copy to system clipboard' })
 -- File explorer.
 vim.keymap.set('n', '<F2>', '<cmd>NvimTreeToggle <CR>', { desc = 'Toggle file expolorer' })
 
--- Symbols.
-vim.keymap.set('n', '<leader>t', '<cmd>Outline <CR>', { desc = 'Toggle symbols expolorer' })
+-- Symbols and troubleshooting.
+vim.keymap.set('n', '<leader>t', '<cmd>Trouble symbols toggle <CR>', { desc = 'Open document symbols' })
+vim.keymap.set('n', '<leader>tt', '<cmd>Trouble diagnostics toggle <CR>', { desc = 'Open diagnostics' })
+
+-- Git.
+vim.keymap.set('n', '<leader>g', ':Git', { desc = 'Git' })
+
+-- Markdown preview.
+vim.keymap.set('n', '<leader>md', '<cmd>Peek<CR>', { desc = 'Open markdown preview' })
 
 -- Spell checking.
 ---@param lang string
