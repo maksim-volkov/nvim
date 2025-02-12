@@ -159,7 +159,6 @@ return {
                 unusedparams = true,
                 shadow = true,
             },
-            staticcheck = true,
             completeUnimported = true,
             usePlaceholders = true,
             staticcheck = true,

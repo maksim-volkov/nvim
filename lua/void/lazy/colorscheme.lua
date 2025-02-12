@@ -3,11 +3,15 @@ return {
     lazy = false,
     priority = 1000,
     ---@type solarized.config
-    opts = {},
     config = function(_, opts)
         vim.o.termguicolors = true
         vim.o.background = 'light'
-        require('solarized').setup(opts)
+        require('solarized').setup({
+            styles = {
+                enabled = true,
+                variables = { italic = false },
+            },
+        })
         vim.cmd.colorscheme 'solarized'
     end,
 }
